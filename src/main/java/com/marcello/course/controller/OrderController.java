@@ -14,23 +14,23 @@ import com.marcello.course.services.OrderService;
 public class OrderController {
 
 	@Autowired
-	private OrderService service;
+	private OrderService orderService;
 
 	@GetMapping
 	public ResponseEntity<List<Order>> findAll() {
-		List<Order> list = service.findAll();
+		List<Order> list = orderService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 	
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Order> findById(@PathVariable Long id) {
-		Order obj = service.findById(id);
+		Order obj = orderService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 
 	@PostMapping
 	public ResponseEntity<List<Order>> saveAll(List<Order> order) {
-		List<Order> saveList = service.saveAll(order);
+		List<Order> saveList = orderService.saveAll(order);
 		return ResponseEntity.ok(saveList);
 	}
 

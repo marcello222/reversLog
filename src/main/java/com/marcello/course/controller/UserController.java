@@ -23,23 +23,23 @@ import com.marcello.course.services.UserService;
 public class UserController {
 
 	@Autowired
-	private UserService service;
+	private UserService userService;
 
 	@GetMapping
 	public ResponseEntity<List<Client>> findAll() {
-		List<Client> list = service.findAll();
+		List<Client> list = userService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Client> findById(@PathVariable Long id) {
-		Client obj = service.findById(id);
+		Client obj = userService.findById(id);
 		return ResponseEntity.ok().body(obj);
 	}
 	
 	@PostMapping
 	public ResponseEntity<Client> insert(@RequestBody Client obj) {
-		obj = service.insert(obj);
+		obj = userService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).body(obj);
@@ -47,13 +47,13 @@ public class UserController {
 	
 	@DeleteMapping(value = "/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Long id) {
-		service.delete(id);
+		userService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<Client> update(@PathVariable Long id, @RequestBody Client obj) {
-		obj = service.update(id, obj);
+		obj = userService.update(id, obj);
 		return ResponseEntity.ok().body(obj);
 	}
 

@@ -5,15 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -31,7 +23,8 @@ public class Product implements Serializable {
 	private Double price;
 	private String imgUrl;
 
-
+	@OneToOne(mappedBy = "product", cascade = CascadeType.ALL)
+	private Reversal reversal;
 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
@@ -50,6 +43,8 @@ public class Product implements Serializable {
 		this.defectDescription = defectDescription;
 		this.price = price;
 		this.imgUrl = imgUrl;
+		this.categories = categories;
+		this.items = items;
 	}
 
 	public Long getId() {
@@ -72,8 +67,8 @@ public class Product implements Serializable {
 		return defectDescription;
 	}
 
-	public void setDefectDescription(String description) {
-		this.defectDescription = description;
+	public void setDefectDescription(String defectDescription) {
+		this.defectDescription = defectDescription;
 	}
 
 	public Double getPrice() {
@@ -92,34 +87,32 @@ public class Product implements Serializable {
 		this.imgUrl = imgUrl;
 	}
 
-
 	public Set<Category> getCategories() {
 		return categories;
 	}
-	
-	@JsonIgnore
-	public Set<Order> getOrders() {
-		Set<Order> set = new HashSet<>();
-		for(OrderItem x : items) {
-			set.add(x.getOrder());
-		}
-		return set;
+
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
+	}
+
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+
+	public void setItems(Set<OrderItem> items) {
+		this.items = items;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Product product = (Product) o;
+		return Objects.equals(id, product.id) && Objects.equals(name, product.name) && Objects.equals(defectDescription, product.defectDescription) && Objects.equals(price, product.price) && Objects.equals(imgUrl, product.imgUrl) && Objects.equals(reversal, product.reversal) && Objects.equals(categories, product.categories) && Objects.equals(items, product.items);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Product other = (Product) obj;
-		return Objects.equals(id, other.id);
+		return Objects.hash(id, name, defectDescription, price, imgUrl, reversal, categories, items);
 	}
 }
