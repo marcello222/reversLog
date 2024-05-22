@@ -1,6 +1,7 @@
 package com.marcello.course.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -36,21 +38,10 @@ public class Product implements Serializable {
 
 	@ManyToMany
 	@JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
+	@Builder.Default
 	private Set<Category> categories = new HashSet<>();
-	
+
 	@OneToMany(mappedBy = "id.product")
+	@Builder.Default
 	public Set<OrderItem> items = new HashSet<>();
-
-	public Product(Long id, String name, String defectDescription, Double price, String imgUrl) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.defectDescription = defectDescription;
-		this.price = price;
-		this.imgUrl = imgUrl;
-		this.categories = categories;
-		this.items = items;
-	}
-
-
 }

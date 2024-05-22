@@ -1,91 +1,81 @@
 package com.marcello.course.config;
 
-import java.time.Instant;
-import java.util.Arrays;
-
 import com.marcello.course.entities.*;
-import com.marcello.course.entities.enums.GuaranteeStatus;
-import com.marcello.course.entities.enums.RefundStatus;
 import com.marcello.course.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import com.marcello.course.entities.enums.OrderStatus;
+import java.util.List;
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 
-	@Autowired
-	private ClientRepository clientRepository;
+    @Autowired
+    private ClientRepository clientRepository;
 
-	@Autowired
-	private OrderRepository orderRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
-	@Autowired
-	private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-	@Autowired
-	private ProductRepository productRepository;
+    @Autowired
+    private ProductRepository productRepository;
 
-	@Autowired
-	private OrderItemRepository orderItemRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
-	@Autowired
-	private RefundRepository refundRepository;
+    @Autowired
+    private RefundRepository refundRepository;
 
-	@Override
-	public void run(String... args) throws Exception {
+    @Autowired
+    private InsertConfig insertConfig;
 
-		Category cat1 = new Category(null, "Electronics");
-		Category cat2 = new Category(null, "Accessories");
-		Category cat3 = new Category(null, "Computers");
+    @Override
+    public void run(String... args) throws Exception {
 
-		Product p1 = new Product(null, "Mouse", "perde conexão via bluetooth", 90.5, "imagemDefeitoMouse.png");
-		Product p2 = new Product(null, "Smart TV", "falha no led da tela", 2190.0, "imagemDefeitoTela.png");
-		Product p3 = new Product(null, "Macbook Pro", "Problema na fonte.", 1250.0, "imagemDefeitoMacbbok.png");
-		Product p4 = new Product(null, "PC Gamer", "Windows não esta ativado", 1200.0, "imagemDefeitoPcGamer.png");
-		Product p5 = new Product(null, "Teclado", "Não funciona tecla enter", 100.99, "imagemDefeitoTeclado.png");
+        List<Category> categories = insertConfig.initializeDataCategory();
+        Category cat1 = categories.get(0);
+        Category cat2 = categories.get(1);
+        Category cat3 = categories.get(2);
 
-		Refund rev1 = new Refund(null, "R$1.2334,00", RefundStatus.VALUE, null,  p1);
-		Refund rev2 = new Refund(null, null, RefundStatus.VOUCHER, "R$2.538,00",  p2);
+        List<Product> products = insertConfig.initializeDataProduct();
+        Product p1 = products.get(0);
+        Product p2 = products.get(1);
+        Product p3 = products.get(2);
+        Product p4 = products.get(3);
+        Product p5 = products.get(4);
 
-		refundRepository.saveAll(Arrays.asList(rev1, rev2));
+        List<Refund> refunds = insertConfig.initializeDataRefund(p1, p2);
+        refundRepository.saveAll(refunds);
 
-		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+        categoryRepository.saveAll(categories);
+        productRepository.saveAll(products);
 
-		p1.getCategories().add(cat2);
-		p2.getCategories().add(cat1);
-		p2.getCategories().add(cat3);
-		p3.getCategories().add(cat3);
-		p4.getCategories().add(cat3);
-		p5.getCategories().add(cat2);
+        p1.getCategories().add(cat2);
+        p2.getCategories().add(cat1);
+        p2.getCategories().add(cat3);
+        p3.getCategories().add(cat3);
+        p4.getCategories().add(cat3);
+        p5.getCategories().add(cat2);
 
-		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+        productRepository.saveAll(products);
 
-		Client u1 = new Client(null, "João Alves", "joao@gmail.com", "9888488888", "123456");
-		Client u2 = new Client(null, "Joana Maria", "joana@gmail.com", "977777777", "123456");
+        List<Client> clients = insertConfig.initializeDataClient();
+        clientRepository.saveAll(clients);
 
-		Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.WITHIN_WARRANTY, u1);
-		Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.OUT_OF_WARRANTY, u2);
+        List<Order> orders = insertConfig.initializeDataOrder(clients.get(0), clients.get(1));
+        orderRepository.saveAll(orders);
 
-		clientRepository.saveAll(Arrays.asList(u1, u2));
-		orderRepository.saveAll(Arrays.asList(o1, o2));
+        List<OrderItem> orderItems = insertConfig.initializeDataOrderItem(orders.get(0), orders.get(1), p1, p3);
+        orderItemRepository.saveAll(orderItems);
 
-		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
-		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
-		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
-
-		orderItemRepository.saveAll(Arrays.asList(oi1, oi2));
-
-		Guarantee pay1 = new Guarantee(null, GuaranteeStatus.OUT_GUARANTEE, Instant.parse("2019-06-20T21:53:07Z"), o1 );
-		o1.setPayment(pay1);
-
-		orderRepository.save(o1);
-
-	}
+        Guarantee pay1 = insertConfig.initializeDataGuarantee(orders.get(0));
+        orders.get(0).setPayment(pay1);
+        orderRepository.save(orders.get(0));
+    }
 
 }

@@ -20,6 +20,7 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marcello.course.entities.enums.OrderStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -27,6 +28,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Builder
 @Table(name = "tb_order")
 public class Order implements Serializable {
 
@@ -59,8 +61,6 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 
-
-
 	public OrderStatus getStatusOrder() {
 		return OrderStatus.valueOf(statusOrder);
 	}
@@ -79,7 +79,5 @@ public class Order implements Serializable {
 	public void setPayment(Guarantee guarantee) {
 		this.guarantee = guarantee;
 	}
-
-
 
 }

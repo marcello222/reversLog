@@ -12,6 +12,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "tb_guarantee")
 public class Guarantee implements Serializable {
 
@@ -29,24 +30,5 @@ public class Guarantee implements Serializable {
     @OneToOne
     @MapsId
     private Order order;
-
-
-    public Guarantee(Long id, GuaranteeStatus guaranteeStatus, Instant purchaseDate, Order order) {
-        super();
-        this.id = id;
-        setStatusOrder(guaranteeStatus);
-        this.purchaseDate = purchaseDate;
-        this.order = order;
-    }
-
-    public GuaranteeStatus getGuaranteeStatusCode() {
-        return GuaranteeStatus.valueOf(guaranteeStatusCode);
-    }
-
-    public void setStatusOrder(GuaranteeStatus guaranteeStatus) {
-        if (guaranteeStatus != null) {
-            this.guaranteeStatusCode = guaranteeStatus.getCode();
-        }
-    }
 
 }
