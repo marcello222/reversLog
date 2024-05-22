@@ -19,7 +19,13 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.marcello.course.entities.enums.OrderStatus;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
@@ -44,9 +50,6 @@ public class Order implements Serializable {
 		
 	@OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
 	private Guarantee guarantee;
-		
-	public Order() {
-	}
 
 	public Order(Long id, Instant orderDate, OrderStatus statusOrder, Client client) {
 		super();
@@ -56,21 +59,7 @@ public class Order implements Serializable {
 		this.client = client;
 	}
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Instant getOrderDate() {
-		return orderDate;
-	}
-
-	public void setOrderDate(Instant moment) {
-		this.orderDate = moment;
-	}
 
 	public OrderStatus getStatusOrder() {
 		return OrderStatus.valueOf(statusOrder);
@@ -82,16 +71,7 @@ public class Order implements Serializable {
 		}
 	}
 
-	public Client getClient() {
-		return client;
-	}
 
-	public void setClient(Client client) {
-		this.client = client;
-	}
-	
-	
-	
 	public Guarantee getPayment() {
 		return guarantee;
 	}
@@ -100,33 +80,6 @@ public class Order implements Serializable {
 		this.guarantee = guarantee;
 	}
 
-	public Set<OrderItem> getItems(){
-		return items;
-	}
-	
-	public Double getTotal() {
-		double sum = 0.0;
-		for(OrderItem x : items) {
-			sum += x.getSubTotal();
-		}
-		return sum;
-	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Order other = (Order) obj;
-		return Objects.equals(id, other.id);
-	}
 
 }

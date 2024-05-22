@@ -1,6 +1,6 @@
 package com.marcello.course.entities.enums;
 
-public enum ReversalStatus {
+public enum RefundStatus {
 
     VOUCHER(1),
 
@@ -8,7 +8,7 @@ public enum ReversalStatus {
 
     private int code;
 
-    private ReversalStatus(int code) {
+    private RefundStatus(int code) {
         this.code = code;
     }
 
@@ -17,8 +17,8 @@ public enum ReversalStatus {
         return code;
     }
 
-    public static ReversalStatus valueOf(int code) {
-        for (ReversalStatus value : ReversalStatus.values()) {
+    public static RefundStatus valueOf(int code) {
+        for (RefundStatus value : RefundStatus.values()) {
             if (value.getCode() == code) {
                 return value;
             }

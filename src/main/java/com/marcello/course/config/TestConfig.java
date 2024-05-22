@@ -4,7 +4,8 @@ import java.time.Instant;
 import java.util.Arrays;
 
 import com.marcello.course.entities.*;
-import com.marcello.course.entities.enums.ReversalStatus;
+import com.marcello.course.entities.enums.GuaranteeStatus;
+import com.marcello.course.entities.enums.RefundStatus;
 import com.marcello.course.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -16,24 +17,24 @@ import com.marcello.course.entities.enums.OrderStatus;
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
-	
+
 	@Autowired
 	private ClientRepository clientRepository;
-	
+
 	@Autowired
 	private OrderRepository orderRepository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	@Autowired
 	private OrderItemRepository orderItemRepository;
 
 	@Autowired
-	private ReversalRepository reversalRepository;
+	private RefundRepository refundRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -48,10 +49,10 @@ public class TestConfig implements CommandLineRunner {
 		Product p4 = new Product(null, "PC Gamer", "Windows não esta ativado", 1200.0, "imagemDefeitoPcGamer.png");
 		Product p5 = new Product(null, "Teclado", "Não funciona tecla enter", 100.99, "imagemDefeitoTeclado.png");
 
-		Reversal rev1 = new Reversal(null, "R$1.2334,00", ReversalStatus.VALUE, null,  p1);
-		Reversal rev2 = new Reversal(null, null, ReversalStatus.VOUCHER, "R$2.538,00",  p2);
+		Refund rev1 = new Refund(null, "R$1.2334,00", RefundStatus.VALUE, null,  p1);
+		Refund rev2 = new Refund(null, null, RefundStatus.VOUCHER, "R$2.538,00",  p2);
 
-		reversalRepository.saveAll(Arrays.asList(rev1, rev2));
+		refundRepository.saveAll(Arrays.asList(rev1, rev2));
 
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
@@ -80,11 +81,11 @@ public class TestConfig implements CommandLineRunner {
 
 		orderItemRepository.saveAll(Arrays.asList(oi1, oi2));
 
-		Guarantee pay1 = new Guarantee(null, Instant.parse("2019-06-20T21:53:07Z"), o1);
+		Guarantee pay1 = new Guarantee(null, GuaranteeStatus.OUT_GUARANTEE, Instant.parse("2019-06-20T21:53:07Z"), o1 );
 		o1.setPayment(pay1);
 
 		orderRepository.save(o1);
 
 	}
-	
+
 }

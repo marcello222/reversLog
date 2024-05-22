@@ -1,84 +1,52 @@
 package com.marcello.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.marcello.course.entities.enums.GuaranteeStatus;
+import lombok.*;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.MapsId;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tb_guarantee")
 public class Guarantee implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private Instant purchaseDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@JsonIgnore
-	@OneToOne
-	@MapsId
-	private Order order;
-	
-	public Guarantee() {
-	}
+    private Instant purchaseDate;
 
-	public Guarantee(Long id, Instant purchaseDate, Order order) {
-		super();
-		this.id = id;
-		this.purchaseDate = purchaseDate;
-		this.order = order;
-	}
+    private Integer guaranteeStatusCode;
 
-	public Long getId() {
-		return id;
-	}
+    @JsonIgnore
+    @OneToOne
+    @MapsId
+    private Order order;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
 
-	public Instant getPurchaseDate() {
-		return purchaseDate;
-	}
+    public Guarantee(Long id, GuaranteeStatus guaranteeStatus, Instant purchaseDate, Order order) {
+        super();
+        this.id = id;
+        setStatusOrder(guaranteeStatus);
+        this.purchaseDate = purchaseDate;
+        this.order = order;
+    }
 
-	public void setPurchaseDate(Instant moment) {
-		this.purchaseDate = moment;
-	}
+    public GuaranteeStatus getGuaranteeStatusCode() {
+        return GuaranteeStatus.valueOf(guaranteeStatusCode);
+    }
 
-	public Order getOrder() {
-		return order;
-	}
-
-	public void setOrder(Order order) {
-		this.order = order;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Guarantee other = (Guarantee) obj;
-		return Objects.equals(id, other.id);
-	}
+    public void setStatusOrder(GuaranteeStatus guaranteeStatus) {
+        if (guaranteeStatus != null) {
+            this.guaranteeStatusCode = guaranteeStatus.getCode();
+        }
+    }
 
 }
