@@ -85,7 +85,6 @@ public class InsertConfig {
         return Arrays.asList(u1, u2);
     }
 
-
     List<Order> initializeDataOrder(Client u1, Client u2) {
         Order o1 = new Order(null, Instant.parse("2019-06-20T19:53:07Z"), OrderStatus.WITHIN_WARRANTY, u1);
         Order o2 = new Order(null, Instant.parse("2019-07-21T03:42:10Z"), OrderStatus.OUT_OF_WARRANTY, u2);
