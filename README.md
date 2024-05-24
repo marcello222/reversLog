@@ -132,7 +132,7 @@ O domínio de gerenciamento de devoluções é composto pelos seguintes subdomí
 ###  5. Event Storming
 
 -   O Event Storming foi elaborado utilizando a ferramenta online **MIRO**
-[![LINK]](https://miro.com/app/board/uXjVKTlAnh4=/)
+[![LINK]](https://miro.com/app/board/uXjVKDBngmI=/)
 
 <p align="center">
   <img src="images/event-storming-1.png" alt="Event Storming" />
