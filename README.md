@@ -147,11 +147,11 @@ O domínio de gerenciamento de devoluções é composto pelos seguintes subdomí
 
 Durante o desenvolvimento de um projeto, é comum encontrar tarefas que ainda não foram concluídas, seja por questões de prioridade ou por exigirem mais tempo e esforço. Para organizar e priorizar essas pendências, criamos o backlog. Abaixo estão algumas das tarefas planejadas para serem desenvolvidas no futuro:
 
--   Criação dos Map Struct para mapear objetos de DTO para Entity, e vice-versa
--   Criação da camada de Serviço de toda implementação de regra de negócio, utilizando alguns Design Parterns como Strategy, entre outros
--   Criação de Interface de Serviço
--   Criação de Interface de Controller
--   Definir e Viabilizar como será o recebimento do retorno da central de análise de produto
+-   Criação dos Map Struct para mapear objetos de DTO para Entity, e vice-versa.
+-   Criação da camada de Serviço de toda implementação de regra de negócio, utilizando alguns Design Parterns como Strategy, entre outros.
+-   Criação de Interface de Serviço.
+-   Criação de Interface de Controller.
+-   Definir e Viabilizar como será o recebimento do retorno da central de análise de produto.
 
 ## C) Participantes
 
