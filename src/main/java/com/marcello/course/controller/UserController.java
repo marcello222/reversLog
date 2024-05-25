@@ -38,11 +38,11 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Client> insert(@RequestBody Client obj) {
-		obj = userService.insert(obj);
+	public ResponseEntity<Client> createdClient(@RequestBody Client client) {
+		Client client1 = userService.insert(client);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-				.buildAndExpand(obj.getId()).toUri();
-		return ResponseEntity.created(uri).body(obj);
+				.buildAndExpand(client.getId()).toUri();
+		return ResponseEntity.created(uri).body(client);
 	}
 	
 	@DeleteMapping(value = "/{id}")

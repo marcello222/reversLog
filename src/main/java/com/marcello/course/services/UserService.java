@@ -32,9 +32,9 @@ public class UserService {
 		Optional<Client> obj = repository.findById(id);
 		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
-	
-	public Client insert(Client obj) {
-		return repository.save(obj);
+
+	public Client insert(Client client) {
+		return repository.save(client);
 	}
 	
 	public void delete(Long id) {
